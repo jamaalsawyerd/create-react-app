@@ -629,7 +629,8 @@ module.exports = function(webpackEnv, urls, bsPort) {
         host: 'localhost',
         port: bsPort,
         ui: false,
-        proxy: urls.localUrlForBrowser
+        proxy: urls.localUrlForBrowser,
+        notify: false,
       }),
       // Inlines the webpack runtime script. This script is too small to warrant
       // a network request.
