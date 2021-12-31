@@ -371,6 +371,11 @@ module.exports = function(webpackEnv, urls, bsPort) {
     module: {
       strictExportPresence: true,
       rules: [
+        {
+          type: 'javascript/auto',
+          test: /\.mjs$/,
+          include: /node_modules/,
+        },
         // Disable require.ensure as it's not a standard language feature.
         { parser: { requireEnsure: false } },
         {
