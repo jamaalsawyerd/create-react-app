@@ -53,6 +53,8 @@ if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
 
 // Tools like Cloud9 rely on this.
 const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 3000;
+// BrowserSync needs a default port setting as well
+const DEFAULT_BS_PORT = parseInt(process.env.BS_PORT, 10) || 8000;
 const HOST = process.env.HOST || '0.0.0.0';
 
 if (process.env.HOST) {
@@ -75,19 +77,24 @@ if (process.env.HOST) {
 // We require that you explicitly set browsers and do not fall back to
 // browserslist defaults.
 const { checkBrowsers } = require('react-dev-utils/browsersHelper');
+let port;
+let bsPort;
 checkBrowsers(paths.appPath, isInteractive)
   .then(() => {
     // We attempt to use the default port but if it is busy, we offer the user to
     // run on a different port. `choosePort()` Promise resolves to the next free port.
     return choosePort(HOST, DEFAULT_PORT);
   })
-  .then(port => {
-    if (port == null) {
+  .then(p => {
+    port = p;
+    return choosePort(HOST, DEFAULT_BS_PORT);
+  })
+  .then(p => {
+    bsPort = p;
+    if (port == null || bsPort == null) {
       // We have not found a port.
       return;
     }
-
-    const config = configFactory('development');
     const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
     const appName = require(paths.appPackageJson).name;
 
@@ -98,6 +105,8 @@ checkBrowsers(paths.appPath, isInteractive)
       port,
       paths.publicUrlOrPath.slice(0, -1)
     );
+    // moving config down here to be able to customize BrowerSync plugin
+    const config = configFactory('development', urls, bsPort);
     // Create a webpack compiler that is configured with custom messages.
     const compiler = createCompiler({
       appName,
