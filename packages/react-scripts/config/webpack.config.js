@@ -629,7 +629,7 @@ module.exports = function (webpackEnv, urls, bsPort) {
             : undefined
         )
       ),
-      new BrowserSyncPlugin({
+      urls && new BrowserSyncPlugin({
         host: 'localhost',
         port: bsPort,
         ui: false,

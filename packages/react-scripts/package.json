@@ -1,6 +1,6 @@
 {
   "name": "jamaalsd-react-scripts",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "(forked from CRA 5.0.0) JamaalSD configuration and scripts for Create React App.",
   "repository": {
     "type": "git",
